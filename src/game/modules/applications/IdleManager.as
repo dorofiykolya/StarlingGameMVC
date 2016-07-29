@@ -1,10 +1,9 @@
 package game.modules.applications
 {
 	import common.events.Event;
+	import common.system.application.Application;
 	import flash.events.Event;
 	import flash.utils.getTimer;
-	import game.GameApplication;
-	import game.modules.preloaders.PreloaderManager;
 	import starling.display.Stage;
 	import starling.events.EnterFrameEvent;
 	import starling.events.TouchEvent;
@@ -20,27 +19,18 @@ package game.modules.applications
 		
 		private var _app:NativeApplicationManager;
 		private var _idleThreshold:int = 30 * 1000;
-		private var _gameApp:GameApplication;
+		private var _application:Application;
 		private var _lastTouch:int;
 		private var _lock:Boolean;
-		private var _preloaderManager:PreloaderManager;
 		
-		public function IdleManager(stage:Stage, gameApp:GameApplication, preloaderManager:PreloaderManager)
+		public function IdleManager(stage:Stage, app:Application)
 		{
-			_preloaderManager = preloaderManager;
-			_gameApp = gameApp;
+			_application = app;
 			_app = new NativeApplicationManager();
 			
-			_gameApp.addEventListener(flash.events.Event.ACTIVATE, onActivate);
+			_application.addEventListener(flash.events.Event.ACTIVATE, onActivate);
 			stage.addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrameHandler);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
-			
-			if (_preloaderManager.opened)
-			{
-				lock = true;
-			}
-			_preloaderManager.addEventListener(common.events.Event.OPEN, onPreloaderOpen);
-			_preloaderManager.addEventListener(common.events.Event.OPEN, onPreloaderClose);
 		}
 		
 		private function onPreloaderClose(e:Object):void 
@@ -65,7 +55,7 @@ package game.modules.applications
 		
 		private function onEnterFrameHandler(e:EnterFrameEvent):void
 		{
-			if (_gameApp.active && isKeepAwake)
+			if (_application.active && isKeepAwake)
 			{
 				var now:int = getTimer();
 				var diff:int = now - _lastTouch;

@@ -1,11 +1,5 @@
 package game.modules.applications
 {
-	import common.system.Environment;
-	import flash.display.Stage;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	import game.configurations.Configuration;
-	import game.modules.alert.AlertManager;
 	
 	/**
 	 * ...
@@ -16,13 +10,9 @@ package game.modules.applications
 		private var _appDescription:IApplicationDescription;
 		private var _nativeApplication:NativeApplicationManager;
 		private var _supportNative:Boolean;
-		private var _alertManager:AlertManager;
-		private var _configuration:Configuration;
 		
-		public function ApplicationManager(alertManager:AlertManager, configuration:Configuration, applicationDescription:IApplicationDescription = null)
+		public function ApplicationManager(applicationDescription:IApplicationDescription = null)
 		{
-			_configuration = configuration;
-			_alertManager = alertManager;
 			_nativeApplication = new NativeApplicationManager();
 			_supportNative = _nativeApplication.support;
 			if (_supportNative || applicationDescription == null)
@@ -57,23 +47,6 @@ package game.modules.applications
 			if (_supportNative)
 			{
 				_nativeApplication.exit(errorCode);
-			}
-		}
-		
-		public function openUpdate():void
-		{
-			_alertManager.alert("Update", "Update is available!\nA new version of the game is available.", "DOWNLOAD", onClickDownload);
-		}
-		
-		private function onClickDownload():void 
-		{
-			if (Environment.isAndroid)
-			{
-				navigateToURL(new URLRequest(_configuration.ANDROID_APP_LINK));
-			}
-			else if (Environment.isIOS)
-			{
-				navigateToURL(new URLRequest(_configuration.IOS_APP_LINK));
 			}
 		}
 	}

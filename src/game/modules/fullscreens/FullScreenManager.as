@@ -1,12 +1,12 @@
 package game.modules.fullscreens
 {
+	import common.system.application.controllers.DisplayStateController;
 	import flash.display.Stage;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	import starling.display.DisplayObject;
 	import starling.display.Stage;
-	import flash.events.MouseEvent;
-	import game.GameApplication;
 	
 	/**
 	 * ...
@@ -16,17 +16,17 @@ package game.modules.fullscreens
 	{
 		static public const HELP_POINT:Point = new Point();
 		
-		private var _gameApplication:GameApplication;
 		private var _nativeStage:flash.display.Stage;
 		private var _starlingStage:starling.display.Stage;
 		private var _map:Dictionary;
+		private var _displayState:DisplayStateController;
 		
-		public function FullScreenManager(gameApplication:GameApplication, nativeStage:flash.display.Stage, starlingStage:starling.display.Stage)
+		public function FullScreenManager(nativeStage:flash.display.Stage, starlingStage:starling.display.Stage)
 		{
 			_map = new Dictionary();
 			_starlingStage = starlingStage;
 			_nativeStage = nativeStage;
-			_gameApplication = gameApplication;
+			_displayState = new DisplayStateController(nativeStage);
 			_nativeStage.addEventListener(MouseEvent.CLICK, onNativeMouseClick);
 		}
 		
@@ -49,13 +49,20 @@ package game.modules.fullscreens
 			}
 			if (result && (result in _map))
 			{
-				_gameApplication.fullScreen = !_gameApplication.fullScreen;
+				if (fullScreen)
+				{
+					_displayState.normal();
+				}
+				else
+				{
+					_displayState.fullScreenInteractive();
+				}
 			}
 		}
 		
 		public function get fullScreen():Boolean
 		{
-			return _gameApplication.fullScreen;
+			return _displayState.isFullScreen || _displayState.isFullScreenInteractive;
 		}
 	
 	}

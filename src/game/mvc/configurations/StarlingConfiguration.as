@@ -1,4 +1,4 @@
-package game.configurations
+package game.mvc.configurations
 {
 	import common.context.IContext;
 	import common.events.IDispatcher;
@@ -6,9 +6,6 @@ package game.configurations
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	import game.commands.Context3DCommand;
-	import game.commands.StarlingContextCommand;
-	import game.commands.StarlingInitializeContext3DCommand;
 	import mvc.commands.IEventCommandMap;
 	import mvc.configurations.IConfigurable;
 	import starling.core.Starling;
@@ -39,10 +36,6 @@ package game.configurations
         
         public function config(context:IContext):void
         {
-            command.map(Event.CONTEXT3D_CREATE).add(StarlingContextCommand, true);
-            command.map(Event.CONTEXT3D_CREATE).add(StarlingInitializeContext3DCommand, true);
-            command.map(Event.CONTEXT3D_CREATE).add(Context3DCommand);
-
             if (application.loaded)
             {
                 onAppLoadCompleteHandler(null);
