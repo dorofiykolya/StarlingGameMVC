@@ -1,6 +1,6 @@
 package game.modules.formats
 {
-	import game.managers.localizations.ILocalizeProvider;
+	import game.modules.localizations.ILocalizeProvider;
 	
 	/**
 	 * ...

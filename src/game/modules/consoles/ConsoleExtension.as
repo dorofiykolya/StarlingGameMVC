@@ -21,7 +21,6 @@ package game.modules.consoles
 		{
 			context.install(ConsoleManager);
 			context.install(ConsoleConfiguration);
-			context.install(ConsoleCommandsConfiguration);
 		}
 		
 	}

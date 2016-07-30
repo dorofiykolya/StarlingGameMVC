@@ -9,7 +9,10 @@ package game.mvc
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	import game.modules.applications.ApplicationManager;
+	import game.modules.consoles.ConsoleExtension;
+	import game.modules.formats.FormatsExtension;
 	import game.modules.fullscreens.FullScreenManager;
+	import game.modules.hotkey.HotKeyExtension;
 	import game.modules.logs.LoggerExtension;
 	import game.modules.storage.StorageManager;
 	import game.mvc.configurations.OrientationConfiguration;
@@ -61,6 +64,9 @@ package game.mvc
 			install(StarlingConfiguration);
 			install(FullScreenManager);
 			install(LoggerExtension);
+			install(HotKeyExtension);
+			install(ConsoleExtension);
+			install(FormatsExtension);
 			
 			if (app.stage)
 			{

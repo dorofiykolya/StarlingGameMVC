@@ -2,7 +2,6 @@ package game.modules.sounds
 {
 	import common.events.EventDispatcher;
 	import flash.media.Sound;
-	import game.Sounds;
 	import game.modules.assets.IAssetProvider;
 	import game.modules.logs.ILogger;
 	import treefortress.sound.SoundAS;
@@ -44,7 +43,7 @@ package game.modules.sounds
 			}
 			else
 			{
-				currentImpl.loadSound(_assetProvider.getSoundsFilePath(_id + Sounds.SOUND_TYPE), _id);
+				currentImpl.loadSound(_assetProvider.getSoundsFilePath(_id), _id);
 			}
 		}
 		

@@ -4,15 +4,15 @@ package game.modules.assets
 	import common.events.IEventDispatcher;
 	import common.system.Environment;
 	import common.system.text.StringUtil;
-	import extensions.fonts.BinaryBitmapFont;
-	import extensions.textures.BinaryTextureAtlas;
 	import flash.media.Sound;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	import game.configurations.Configuration;
+	import game.mvc.ContextConfiguration;
 	import starling.events.Event;
+	import starling.extensions.fonts.BinaryBitmapFont;
+	import starling.extensions.textures.BinaryTextureAtlas;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -30,7 +30,7 @@ package game.modules.assets
 		[Inject]
 		public var eventDispather:IEventDispatcher;
 		[Inject]
-		public var configuration:Configuration;
+		public var configuration:ContextConfiguration;
 		
 		private var _assetManager:AssetManager;
 		
@@ -202,7 +202,7 @@ package game.modules.assets
 			for each (var name:String in names)
 			{
 				var item:ByteArray = getByteArray(name);
-				var now:int = getTimer();
+				//var now:int = getTimer();
 				var textureName:String;
 				if (BinaryTextureAtlas.isBinaryTextureAtlas(item))
 				{
@@ -210,7 +210,7 @@ package game.modules.assets
 					if (!getTextureAtlas(textureName))
 					{
 						addTextureAtlas(textureName, new BinaryTextureAtlas(getTexture(textureName), item));
-						trace("TIME ATLAS: " + textureName + ":" + (getTimer() - now));
+						//trace("TIME ATLAS: " + textureName + ":" + (getTimer() - now));
 					}
 				}
 				else if (BinaryBitmapFont.isBinaryBitmapFont(item))
@@ -219,7 +219,7 @@ package game.modules.assets
 					if (!TextField.getBitmapFont(BinaryBitmapFont.getFontName(item)))
 					{
 						TextField.registerBitmapFont(new BinaryBitmapFont(getTexture(textureName), item), BinaryBitmapFont.getFontName(item));
-						trace("TIME FONT: " + textureName + ":" + (getTimer() - now));
+						//trace("TIME FONT: " + textureName + ":" + (getTimer() - now));
 					}
 				}
 			}

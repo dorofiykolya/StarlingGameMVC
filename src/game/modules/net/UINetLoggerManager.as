@@ -16,7 +16,7 @@ package game.modules.net
 	 */
 	public class UINetLoggerManager
 	{
-		[Embed(source = "../../../embeds/logger/net_logger.swf", mimeType = "application/octet-stream")]
+		[Embed(source = "net_logger.swf", mimeType = "application/octet-stream")]
 		private static const UI_NET_LOGGER:Class;
 		
 		private var _stage:Stage;

@@ -18,7 +18,6 @@ package game.modules.hotkey
 		
 		public function extend(context:IContext):void 
 		{
-			context.install(HotKeyConfiguration);
 			context.install(HotKeyManager);
 		}
 		

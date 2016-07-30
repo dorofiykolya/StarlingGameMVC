@@ -1,7 +1,7 @@
 package game.modules.net
 {
 	import core.net.NetLog;
-	import game.configurations.Configuration;
+	import game.mvc.ContextConfiguration;
 	
 	/**
 	 * ...
@@ -9,9 +9,9 @@ package game.modules.net
 	 */
 	public class NetLoggerManager implements INetLogger
 	{
-		private var _configuration:Configuration;
+		private var _configuration:ContextConfiguration;
 		
-		public function NetLoggerManager(configuration:Configuration)
+		public function NetLoggerManager(configuration:ContextConfiguration)
 		{
 			_configuration = configuration;
 		}
