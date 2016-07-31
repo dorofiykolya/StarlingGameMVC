@@ -1,10 +1,9 @@
 package game.modules.windows
 {
-	import adobe.utils.CustomActions;
 	import common.context.IContext;
 	import common.events.EventDispatcher;
 	import game.mvc.view.ILayers;
-	import game.view.GameViewContext;
+	import game.mvc.view.ViewContext;
 	import mvc.configurations.IConfigurable;
 	import mvc.processors.ConfigurationProcessor;
 	
@@ -21,7 +20,7 @@ package game.modules.windows
 		private var _idMap:WindowIdMap;
 		private var _context:WindowsContext;
 		
-		public function WindowsManager(context:GameViewContext, layers:ILayers)
+		public function WindowsManager(context:ViewContext, layers:ILayers)
 		{
 			_context = new WindowsContext(context);
 			_context.install(new ConfigurationProcessor());
