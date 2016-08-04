@@ -18,7 +18,7 @@ package game.modules.debugs
 		
 		public function extend(context:IContext):void 
 		{
-			context.install(DebugManager);
+			context.install(DebugMouseLogManager);
 			
 			if (Environment.isDebugger && (Environment.isStandAlone))
 			{
