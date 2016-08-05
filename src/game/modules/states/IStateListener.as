@@ -5,6 +5,7 @@ package game.modules.states
 	[Event(name = "enter", type = "game.modules.states.StateEvent")]
 	[Event(name = "exit", type = "game.modules.states.StateEvent")]
 	[Event(name = "change", type = "game.modules.states.ChageStateEvent")]
+	
 	/**
 	 * ...
 	 * @author dorofiy.com

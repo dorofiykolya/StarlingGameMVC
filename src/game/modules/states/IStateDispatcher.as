@@ -1,6 +1,7 @@
-package game.modules.states 
+package game.modules.states
 {
 	import common.events.IEventDispatcher;
+	
 	[Event(name = "enter", type = "game.modules.states.StateEvent")]
 	[Event(name = "exit", type = "game.modules.states.StateEvent")]
 	[Event(name = "change", type = "game.modules.states.ChageStateEvent")]
@@ -14,5 +15,5 @@ package game.modules.states
 		function get current():State;
 		function set current(value:State):void;
 	}
-	
+
 }

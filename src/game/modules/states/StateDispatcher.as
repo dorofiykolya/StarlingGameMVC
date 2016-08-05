@@ -5,7 +5,7 @@ package game.modules.states
 	
 	[Event(name = "enter", type = "game.modules.states.StateEvent")]
 	[Event(name = "exit", type = "game.modules.states.StateEvent")]
-	[Event(name = "change", type = "game.modules.states.ChageStateEvent")]
+	[Event(name = "change", type = "game.modules.states.ChangeStateEvent")]
 	/**
 	 * ...
 	 * @author dorofiy.com
@@ -54,7 +54,7 @@ package game.modules.states
 				_previous = _current;
 				_eventDispatcher.dispatchEventAs(StateEvent, StateEvent.ENTER, false, null, [_previous, _current, next]);
 				_current = next;
-				_eventDispatcher.dispatchEventAs(ChangeStateEvent, ChangeStateEvent.CHANGE, false, [null, _previous, _current]);
+				_eventDispatcher.dispatchEventAs(ChangeStateEvent, ChangeStateEvent.CHANGE, false, _current, [null, _previous, _current]);
 			}
 		}
 		
