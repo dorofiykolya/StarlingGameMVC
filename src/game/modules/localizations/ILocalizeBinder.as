@@ -19,7 +19,7 @@ package game.modules.localizations
 		 * @param	after - function(instance:Object, key:String, property:String):void {}
 		 */
 		function bind(instance:Object, key:String, property:String = null, formatFunction:Function = null, before:Function = null, after:Function = null):void;
-		function unbind(instance:Object):void
+		function unbind(instance:Object, property:String = null):void
 	}
 
 }

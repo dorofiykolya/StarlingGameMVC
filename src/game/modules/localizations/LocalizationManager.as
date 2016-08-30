@@ -3,6 +3,10 @@ package game.modules.localizations
 	import common.events.Event;
 	import common.events.EventDispatcher;
 	import common.events.IEventDispatcher;
+	import common.system.DictionaryMap;
+	import common.system.collection.Enumerator;
+	import common.system.collection.IEnumerator;
+	import common.system.collection.KeyValuePair;
 	import flash.utils.Dictionary;
 	
 	[Event(name = "localizationEvent.change", type = "game.modules.localizations.LocalizationEvent")]
@@ -18,6 +22,7 @@ package game.modules.localizations
 		private static const TEXT:String = "text";
 		private static const LABEL:String = "label";
 		private static const TOOLTIP:String = "toolTip";
+		private static const TITLE:String = "title";
 		
 		//--------------------------------------------------------------------------
 		//     
@@ -34,7 +39,7 @@ package game.modules.localizations
 		private var _eventDispatcher:IEventDispatcher;
 		private var _records:Dictionary;
 		private var _localizationProvider:ILocalizationProvider;
-		private var _textBinder:Dictionary;
+		private var _textBinder:DictionaryMap;
 		private var _properties:Vector.<String>;
 		private var _name:String;
 		private var _language:String;
@@ -48,8 +53,8 @@ package game.modules.localizations
 			_eventDispatcher = eventDispatcher;
 			_localizationProvider = provider;
 			_records = new Dictionary();
-			_textBinder = new Dictionary();
-			_properties = new <String>[null, TEXT, LABEL];
+			_textBinder = new DictionaryMap();
+			_properties = new <String>[null, TEXT, LABEL, TITLE, TOOLTIP];
 			
 			if (provider)
 			{
@@ -109,30 +114,6 @@ package game.modules.localizations
 		 *
 		 * @param	instance
 		 * @param	key
-		 * @param	foramtFunction example: function(value:String = "text"):String { return value + ";"};
-		 */
-		public function bindToolTip(instance:Object, key:String, foramtFunction:Function = null):void
-		{
-			var has:Boolean = TOOLTIP in instance;
-			if (has)
-			{
-				_textBinder[instance] = {key: key, property: TOOLTIP, format: foramtFunction};
-				var hasFormat:Boolean = foramtFunction != null;
-				if (hasFormat)
-				{
-					instance[TOOLTIP] = foramtFunction(localize(key));
-				}
-				else
-				{
-					instance[TOOLTIP] = localize(key);
-				}
-			}
-		}
-		
-		/**
-		 *
-		 * @param	instance
-		 * @param	key
 		 * @param	property
 		 * @param	foramtFunction example: function(value:String = "text"):String { return value + ";"};
 		 * @param	size - apply to instance when change
@@ -141,14 +122,31 @@ package game.modules.localizations
 		 */
 		public function bind(instance:Object, key:String, property:String = null, formatFunction:Function = null, before:Function = null, after:Function = null):void
 		{
-			var info:Object;
-			_textBinder[instance] = info = {key: key, property: property, format: formatFunction, before: before, after: after};
-			updateObject(info, instance, localize);
+			var findedProperty:String = findProperty(instance, property);
+			if (findedProperty != null)
+			{
+				var entry:Entry = new Entry();
+				entry.key = key;
+				entry.property = findedProperty;
+				entry.format = formatFunction;
+				entry.before = before;
+				entry.after = after;
+				
+				_textBinder.map(instance, findedProperty).value = entry;
+				updateObject(entry, instance, localize);
+			}
 		}
 		
-		public function unbind(instance:Object):void
+		public function unbind(instance:Object, property:String = null):void
 		{
-			delete _textBinder[instance];
+			if (property != null)
+			{
+				_textBinder.map(instance, property).value = null;
+			}
+			else
+			{
+				_textBinder.clear(instance);
+			}
 		}
 		
 		//--------------------------------------------------------------------------
@@ -162,6 +160,19 @@ package game.modules.localizations
 			updateContent();
 		}
 		
+		private function findProperty(instance:Object, property:String):String
+		{
+			_properties[0] = property;
+			for each (var item:String in _properties)
+			{
+				if (item && item in instance)
+				{
+					return item;
+				}
+			}
+			return null;
+		}
+		
 		private function updateContent():void
 		{
 			updateFrom(_textBinder, localize);
@@ -169,57 +180,42 @@ package game.modules.localizations
 			_eventDispatcher.dispatchEventAs(LocalizationEvent, LocalizationEvent.CHANGE);
 		}
 		
-		private function updateFrom(dictionary:Dictionary, funcProvider:Function):void
+		private function updateFrom(dictionary:DictionaryMap, funcProvider:Function):void
 		{
 			var instance:Object;
-			var current:Object;
-			for (instance in dictionary)
+			var current:Entry;
+			
+			var enumerator:IEnumerator = dictionary.getEnumerator();
+			while (enumerator.moveNext())
 			{
-				current = dictionary[instance];
-				updateObject(current, instance, funcProvider);
+				var pair:KeyValuePair = KeyValuePair(enumerator.current);
+				instance = pair.key;
+				var instanceEnumarator:IEnumerator = DictionaryMap(pair.value).getEnumerator();
+				while (instanceEnumarator.moveNext())
+				{
+					current = Entry(DictionaryMap(KeyValuePair(instanceEnumarator.current).value).value);
+					updateObject(current, instance, funcProvider);
+				}
 			}
 		}
 		
-		private function updateObject(currentInfo:Object, instance:Object, funcProvider:Function):void
+		private function updateObject(entry:Entry, instance:Object, funcProvider:Function):void
 		{
-			var key:Object;
-			var property:String;
-			var before:Function;
-			var after:Function;
-			var format:Function;
-			
-			property = currentInfo.property;
-			format = currentInfo.format;
-			before = currentInfo.before;
-			after = currentInfo.after;
-			_properties[0] = property;
-			for each (property in _properties)
+			if (Boolean(entry.before))
 			{
-				if (property && property in instance)
-				{
-					if (Boolean(before))
-					{
-						before(instance, currentInfo.key, property);
-					}
-					if (Boolean(format))
-					{
-						instance[property] = format(funcProvider(currentInfo.key));
-					}
-					else
-					{
-						instance[property] = funcProvider(currentInfo.key);
-					}
-					if (Boolean(after))
-					{
-						after(instance, currentInfo.key, property);
-					}
-					break;
-				}
-				else if (property)
-				{
-					var instanceName:String = "name" in instance ? instance.name : "";
-					trace(instance + ": " + instanceName + " has not property:" + property);
-				}
+				entry.before(instance, entry.key, entry.property);
+			}
+			if (Boolean(entry.format))
+			{
+				instance[entry.property] = entry.format(funcProvider(entry.key));
+			}
+			else
+			{
+				instance[entry.property] = funcProvider(entry.key);
+			}
+			if (Boolean(entry.after))
+			{
+				entry.after(instance, entry.key, entry.property);
 			}
 		}
 		
@@ -234,4 +230,13 @@ package game.modules.localizations
 			updateContent();
 		}
 	}
+}
+
+class Entry
+{
+	public var key:Object;
+	public var property:String;
+	public var format:Function;
+	public var before:Function;
+	public var after:Function;
 }
