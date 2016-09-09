@@ -8,6 +8,36 @@ package game.utils
 	 */
 	public class Math2
 	{
+		/**
+		 * 
+		 * @param	value
+		 * @param	decimals 0-7
+		 * @return
+		 */
+		public static function round(value:Number, decimals:int = 0):Number
+		{
+			if (decimals <= 0) 
+			{
+				return Math.round(value);
+			}
+			decimals = clamp(decimals, 1, 7);
+			return (Math.round(value * decimals)) / decimals;
+		}
+		
+		/**
+		 * 
+		 * @param	value
+		 * @param	decimals 0-7
+		 * @return
+		 */
+		public static function floor(value:Number, decimals:int = 0):Number
+		{
+			if (decimals <= 0)
+			{
+				return int(value);
+			}
+			return (int(value * decimals)) / decimals;
+		}
 		
 		//[Inline]
 		public static function clamp(input:Number, left:Number, right:Number):Number
@@ -123,6 +153,26 @@ package game.utils
 			result = polarRad(len, angleRad, result);
 			result.offset(x, y);
 			return result;
+		}
+		
+		public static function distance(fromX:Number, fromY:Number, toX:Number, toY:Number):Number
+		{
+			var x:Number = toX - fromX;
+			var y:Number = toY - fromY;
+			if (x < 0) x = -x;
+			if (y < 0) y = -y;
+			return Math.sqrt(x * x + y * y);
+		}
+		
+		public static function distance3(fromX:Number, fromY:Number, fromZ:Number, toX:Number, toY:Number, toZ:Number):Number
+		{
+			var x:Number = toX - fromX;
+			var y:Number = toY - fromY;
+			var z:Number = toZ - fromZ;
+			if (x < 0) x = -x;
+			if (y < 0) y = -y;
+			if (z < 0) z = -z;
+			return Math.sqrt(x * x + y * y + z * z);
 		}
 		
 		public function Math2()
