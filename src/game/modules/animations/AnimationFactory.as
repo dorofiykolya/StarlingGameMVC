@@ -14,13 +14,11 @@ package game.modules.animations
 		private var _animationProvider:AnimationProvider;
 		
 		public var layerFactory:LayerFactory;
-		public var juggler:Juggler;
 		public var textureProvider:ITextureProvider;
 		
-		public function AnimationFactory(animationProvider:AnimationProvider, juggler:Juggler)
+		public function AnimationFactory(animationProvider:AnimationProvider)
 		{
 			this._animationProvider = animationProvider;
-			this.juggler = juggler;
 			this.textureProvider = animationProvider.textureProvider;
 			this.layerFactory = animationProvider.layerFactory;
 		}
