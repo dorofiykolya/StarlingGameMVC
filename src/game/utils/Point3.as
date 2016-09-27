@@ -1,6 +1,5 @@
 package game.utils
 {
-	import common.system.IEquatable;
 	import common.system.text.StringUtil;
 	import flash.geom.Point;
 	
@@ -8,11 +7,9 @@ package game.utils
 	 * ...
 	 * @author dorofiy.com
 	 */
-	public class Point3 implements IEquatable
+	public class Point3 extends Point
 	{
 		public var z:Number;
-		public var y:Number;
-		public var x:Number;
 		
 		public function Point3(x:Number = 0, y:Number = 0, z:Number = 0)
 		{
@@ -21,53 +18,62 @@ package game.utils
 			this.x = x;
 		}
 		
-		public function substract(point3:Point3):Point3
+		public override function subtract(point:Point):flash.geom.Point
 		{
-			return new Point3(x - point3.x, y - point3.y, z - point3.z);
+			var point3:Point3 = point as Point3;
+			if (point3)
+			{
+				return new Point3(x - point3.x, y - point3.y, z - point3.z);
+			}
+			return new Point3(x - point.x, y - point.y, z);
+			super.subtract
 		}
 		
-		public function add(point3:Point3):Point3
+		public override function add(point:Point):Point
 		{
-			return new Point3(x + point3.x, y + point3.y, z + point3.z);
+			var point3:Point3 = point as Point3;
+			if (point3)
+			{
+				return new Point3(x + point3.x, y + point3.y, z + point3.z);
+			}
+			return new Point3(x + point.x, y + point.y, z);
 		}
 		
-		public function offset(offset:Point3):void
+		public function offset3(offset:Point3):void
 		{
 			x += offset.x;
 			y += offset.y;
 			z += offset.z;
 		}
 		
-		public function setTo(x:Number = 0, y:Number = 0, z:Number = 0):void
+		public function setTo3(x:Number = 0, y:Number = 0, z:Number = 0):void
 		{
 			this.x = x;
 			this.y = y;
 			this.z = z;
 		}
 		
-		public function copyFrom(point3:Point3):void
+		public override function copyFrom(point:Point):void
 		{
-			x = point3.x;
-			y = point3.y;
-			z = point3.z;
+			x = point.x;
+			y = point.y;
+			if (point is Point3)
+			{
+				z = Point3(point).z;
+			}
 		}
 		
-		public function toPoint():Point
+		public override function equals(toCompare:Point):Boolean
 		{
-			return new Point(x, y);
-		}
-		
-		public function equals(value:Object):Boolean
-		{
-			var other:Point3 = value as Point3;
+			var other:Point3 = toCompare as Point3;
 			if (other)
 			{
 				return x == other.x && y == other.y && z == other.z;
 			}
-			return false;
+			return super.equals(toCompare);
 		}
 		
-		public function toString():String
+		public override function toString():String
 		{
 			return StringUtil.format("[Point3(x={0},y={1},z={2})]", x, y, z);
 		}
