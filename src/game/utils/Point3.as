@@ -9,6 +9,14 @@ package game.utils
 	 */
 	public class Point3 extends Point
 	{
+		private static const _week:Point3 = new Point3();
+		
+		public static function week(x:Number = 0, y:Number = 0, z:Number = 0):Point3
+		{
+			_week.setTo3(x, y, z);
+			return _week;
+		}
+		
 		public var z:Number;
 		
 		public function Point3(x:Number = 0, y:Number = 0, z:Number = 0)
