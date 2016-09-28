@@ -44,9 +44,9 @@ package starling.extensions.particles
 			var ratios:String = String(config.colors.@ratios);
 			var alphas:String = String(config.colors.@alphas);
 			
-			_colors = Vector.<Number>(ObjectUtils.toType(colors.split(","), Vector.<Number>));
-			_colorsRatios = Vector.<Number>(ObjectUtils.toType(ratios.split(","), Vector.<Number>));
-			_alphas = Vector.<Number>(ObjectUtils.toType(alphas.split(","), Vector.<Number>));
+			_colors = Vector.<Number>(ObjectUtils.toType(colors.split(","), Class(Vector.<Number>)));
+			_colorsRatios = Vector.<Number>(ObjectUtils.toType(ratios.split(","), Class(Vector.<Number>)));
+			_alphas = Vector.<Number>(ObjectUtils.toType(alphas.split(","), Class(Vector.<Number>)));
 			
 			if (_colors.length != _colorsRatios.length || _colors.length != _alphas.length || _colorsRatios.length != _alphas.length)
 			{
@@ -59,8 +59,8 @@ package starling.extensions.particles
 			var sizes:String = String(config.sizes.@sizes);
 			var ratios:String = String(config.sizes.@ratios);
 			
-			_sizes = Vector.<Number>(ObjectUtils.toType(sizes.split(","), Vector.<Number>));
-			_sizeRatios = Vector.<Number>(ObjectUtils.toType(ratios.split(","), Vector.<Number>));
+			_sizes = Vector.<Number>(ObjectUtils.toType(sizes.split(","), Class(Vector.<Number>)));
+			_sizeRatios = Vector.<Number>(ObjectUtils.toType(ratios.split(","), Class(Vector.<Number>)));
 			
 			if (_sizes.length != _sizeRatios.length)
 			{
