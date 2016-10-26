@@ -239,4 +239,9 @@ class Entry
 	public var format:Function;
 	public var before:Function;
 	public var after:Function;
+	
+	public function Entry()
+	{
+		
+	}
 }
