@@ -21,7 +21,7 @@ package game.utils
 				return Math.round(value);
 			}
 			decimals = clamp(decimals, 1, 7);
-			return (Math.round(value * decimals)) / decimals;
+			return (Math.round(value * (decimals * 10))) / (decimals * 10);
 		}
 		
 		/**
@@ -36,7 +36,7 @@ package game.utils
 			{
 				return int(value);
 			}
-			return (int(value * decimals)) / decimals;
+			return (int(value * (decimals * 10))) / (decimals * 10);
 		}
 		
 		//[Inline]
